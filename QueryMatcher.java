@@ -4,10 +4,10 @@ import java.util.*;
 class QueryMatcher extends WebService {
 
   @Override
-  void provideService(String searchWord, Database db, int dataClassNumber) {
+  public List<List<String>> provideService(String searchWord, Database db, int dataClassNumber) {
 
     ArrayList<String> products = db.dataClasses.get(dataClassNumber).getStrings();
-    
+
     Collections.sort(products);
     List<List<String>> ans = new ArrayList<>();
     
@@ -31,7 +31,7 @@ class QueryMatcher extends WebService {
     
     // add to total usage cost
     db.usageCost += 8.0f;
-    System.out.println(ans);
+    return ans;
     
   }
   
