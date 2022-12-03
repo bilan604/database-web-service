@@ -1,5 +1,8 @@
+import java.util.*;
+
+
 abstract class WebService {
   
-  abstract void provideService(String searchWord, Database db, int dataClassNumber);
+  abstract List<List<String>> provideService(String searchWord, Database db, int dataClassNumber);
   
 }
