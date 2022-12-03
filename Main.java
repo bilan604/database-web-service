@@ -29,31 +29,51 @@ class Main {
     dc3.setStrings(s3);
     db.addDataClass(dc3);
 
+    // view total number of strings inside db
+    db.viewTotalStringCount();
+
     // Make a profitable Web Service
     QueryMatcher queryMatcher = new QueryMatcher();
-    Scanner sc = new Scanner(System.in);
-    String prompt1 = "Which query term would you like to use?\n  1) mouse\n  2) bags\n  3) Havana\n  4) Exit Program";
-    String prompt2 = "Which data point would you like to query?";
+    List<List<String>> matches = new ArrayList<>();
+    // take a field to search
+    int dataClassNumber;
+    Scanner sc1 = new Scanner(System.in);
+    // take a search term
+    String searchTerm;
+    Scanner sc2 = new Scanner(System.in);
+    // check if user decided to exit
     boolean exit = false;
     
+    String prompt = "Which dataClass would you like to query?";
+    
     while (!exit) {
-      System.out.println(prompt1);
-      int queryChoice = sc.nextInt();
-      String query = "";
+      dataClassNumber = 0;
+      searchTerm = "";
       
-      switch (queryChoice) {
-        case 1: query = "mouse";
+      System.out.println(prompt);
+      db.viewDataClassStrings();
+      System.out.println("    4) EXIT\n");
+      
+      try{
+        dataClassNumber = sc1.nextInt();
+      } catch(InputMismatchException ime) {
+        System.out.println("Invalid Input");
+      } catch(Exception e) {
+        System.out.println("Exception Raised");
+      }
+      
+      switch (dataClassNumber) {
+        case 1: dataClassNumber = 0;
           break;
-        case 2: query = "bags";
+        case 2: dataClassNumber = 1;
           break;
-        case 3: query = "Havana";
+        case 3: dataClassNumber = 2;
           break;
-        case 4: query = "__exit__";
+        case 4: dataClassNumber = 0;
           exit = true;
-          System.out.println("Terminating Web Service");
           break;
-        default: query = "mouse";
-          System.out.println("Default query \"mouse\" used");
+        default: dataClassNumber = 0;
+          System.out.println("Number out of bounds");
           break;
       }
       
@@ -61,24 +81,30 @@ class Main {
         break;
       }
       
-      System.out.println("You have chosen the query: " + query);
-      System.out.println(prompt2);
-      db.viewDataClassStrings();
-      int dataClassNumber = sc.nextInt()-1;
+      System.out.println("You have chosen to query dataClass:\n    " + db.dataClasses.get(dataClassNumber).getStrings());
 
       try {
-        queryMatcher.provideService(query, db, dataClassNumber);
-      } catch (Exception ex) {
-        System.out.println("Caught Exception " + ex);
+        searchTerm = sc2.nextLine();
+      } catch(InputMismatchException a) {
+        System.out.println("Invalid Input!");
+      } catch(Exception e) {
+        System.out.println("Exception Caught!");
       }
+
+      // use the web service (Search engine)
+      matches = queryMatcher.provideService(searchTerm, db, dataClassNumber);
+      
+      System.out.println("Here are your query matches:\n    " + matches);
       
       System.out.println();
     }
     
-    sc.close();
-
+    sc1.close();
+    sc2.close();
+    
     // view usage cost of db
     db.viewUsageCost();
+
   }
   
 }
