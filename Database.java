@@ -10,7 +10,7 @@ class Database {
 
   // Initialize Database
   public Database(){
-    this.name = "";
+    this.name = "noNameDB";
     this.size = 0;
     this.usageCost = 0.0f;
     this.dataClasses = new ArrayList<DataClass>();
@@ -29,7 +29,7 @@ class Database {
   // Provide storage space
   public void allocateSpace(int space) {
     
-    System.out.println("Allocating " + space + " units of storage to your Database");
+    System.out.println("Allocating " + space + " units of storage to " + this.name);
     
     for (int i = 0; i < space; i++) {
       DataClass dataClass = new DataClass();
@@ -46,7 +46,7 @@ class Database {
   public void viewDataClassStrings() {
     int counter = 1;
     for (DataClass dc : this.dataClasses) {
-      System.out.println(counter + ") " + dc.getStrings());
+      System.out.println("    " + counter + ") " + dc.getStrings());
       counter += 1;
     }
   }
@@ -70,7 +70,7 @@ class Database {
     }
     
     if (!addedSuccessfully) {
-      System.out.println("Not enough storage, please upgrade Database or consider purchasing another Instance");
+      System.out.println("Not enough storage, please upgrade " + this.name + " or consider purchasing another Instance");
     }
   
   }
@@ -83,10 +83,12 @@ class Database {
       total += dataClass.getStrings().size();
     }
     System.out.println("Total String Count: " + total);
+    this.usageCost += 1.0;
   }
   
   public void viewUsageCost() {
-    System.out.println("Current usage cost: " + this.usageCost);
+    usageCost = (int) (this.usageCost * 100);
+    System.out.println(this.name + "'s current usage cost: $" + (float)(usageCost/100));
   }
 
 }
